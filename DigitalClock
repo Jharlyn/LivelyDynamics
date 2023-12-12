@@ -1,0 +1,34 @@
+import tkinter as ui
+from tkinter import *
+import time
+import os
+
+window = ui.Tk()
+
+def update_clock():
+    hours = time.strftime("%I")
+    minutes = time.strftime("%M")
+    seconds = time.strftime("%S")
+    am_or_pm = time.strftime("%p")
+    time_text = hours + ":" + minutes + ":" + seconds + " " + am_or_pm
+    digital_clock_lbl.config(text=time_text)
+    digital_clock_lbl.after(1000, update_clock)
+
+image_path = "/Users/macbook/Downloads/mario.png"
+
+if os.path.exists(image_path):
+    original_image = PhotoImage(file=image_path)
+    resized_image = original_image.subsample(int(original_image.width() / 800), int(original_image.height() / 400))
+    
+    my_label = Label(window, image=resized_image, bd=0, highlightthickness=0)
+    my_label.place(x=0, y=0, relwidth=1, relheight=1)
+else:
+    print(f"Image not found at: {image_path}")
+
+digital_clock_lbl = ui.Label(window, text="00:00:00", font=("Helvetica 72 bold"), fg="#C84C0C", bg="#5D94FB")
+digital_clock_lbl.pack(pady=130)
+
+update_clock()
+window.title("DIGITAL CLOCK")
+window.geometry("800x400+350+50")
+window.mainloop()
