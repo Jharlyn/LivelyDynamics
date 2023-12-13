@@ -1,0 +1,55 @@
+import tkinter as ui
+import time
+import os
+import math
+
+window = ui.Tk()
+window.geometry("600x600")
+
+def update_clock():
+    hours = int(time.strftime("%I"))
+    minutes = int(time.strftime("%M"))
+    seconds = int(time.strftime("%S"))
+
+    seconds_x = seconds_hand_len * math.sin(math.radians(seconds * 6)) + center_x
+    seconds_y = -1 * seconds_hand_len * math.cos(math.radians(seconds * 6)) + center_y
+    canvas.coords(seconds_hand, center_x, center_y, seconds_x, seconds_y)
+
+    minutes_x = minutes_hand_len * math.sin(math.radians(minutes * 6)) + center_x
+    minutes_y = -1 * minutes_hand_len * math.cos(math.radians(minutes * 6)) + center_y
+    canvas.coords(minutes_hand, center_x, center_y, minutes_x, minutes_y)
+
+    hours_x = hours_hand_len * math.sin(math.radians((hours % 12) * 30 + minutes * 0.5)) + center_x
+    hours_y = -1 * hours_hand_len * math.cos(math.radians((hours % 12) * 30 + minutes * 0.5)) + center_y
+    canvas.coords(hours_hand, center_x, center_y, hours_x, hours_y)
+
+    window.after(1000, update_clock)
+
+image_path = "/Users/macbook/Downloads/clock.png"
+
+canvas = ui.Canvas(window, width=400, height=400, bg='black')
+canvas.pack(expand=True, fill="both")
+bg = ui.PhotoImage(file=image_path)
+canvas.create_image(300, 300, image=bg)
+
+center_x = 300
+center_y = 300
+seconds_hand_len = 200
+minutes_hand_len = 140
+hours_hand_len = 100
+
+seconds_hand = canvas.create_line(center_x, center_y,
+                                  center_x, center_y,
+                                  width=1.5, fill="red")
+
+minutes_hand = canvas.create_line(center_x, center_y,
+                                  center_x, center_y,
+                                  width=2, fill="white")
+
+hours_hand = canvas.create_line(center_x, center_y,
+                                center_x, center_y,
+                                width=4, fill="white")
+
+update_clock()
+window.title("ANALOG CLOCK")
+window.mainloop()
