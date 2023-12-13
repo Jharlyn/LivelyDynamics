@@ -12,3 +12,37 @@ resized_image = bg.subsample(int(bg.width() / 800), int(bg.height() / 400))
 my_canvas.create_image(0, 0, anchor="nw", image=resized_image)
 my_canvas.create_text(450, 200, text="First Sem Done", font=("Helvetica", 40))
 root.mainloop()
+
+#Update Text Every 3 seconds
+from tkinter import *
+
+def update_text():
+    current_text = text_var.get()
+    
+    if current_text == "First Sem Done":
+        text_var.set("Well Done")
+    else:
+        text_var.set("Brought to you by Jharlyn")
+
+    my_canvas.itemconfig(text_item, text=text_var.get())
+
+    root.after(3000, update_text)
+
+root = Tk()
+root.title("")
+
+image_path = "/Users/macbook/Downloads/stars.png"
+bg = PhotoImage(file=image_path)
+my_canvas = Canvas(root, width=800, height=400)
+my_canvas.pack(fill="both", expand=True)
+resized_image = bg.subsample(int(bg.width() / 800), int(bg.height() / 400))
+my_canvas.create_image(0, 0, anchor="nw", image=resized_image)
+
+text_var = StringVar()
+text_var.set("First Sem Done")
+
+text_item = my_canvas.create_text(450, 200, text=text_var.get(), font=("Helvetica", 30), anchor='center')
+
+root.after(3000, update_text)
+
+root.mainloop()
