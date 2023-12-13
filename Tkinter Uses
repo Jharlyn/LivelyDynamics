@@ -1,0 +1,14 @@
+#Set Image to Background
+from tkinter import *
+
+root = Tk()
+root.title("")
+
+image_path = "/Users/macbook/Downloads/stars.png"
+bg = PhotoImage(file=image_path)  
+my_canvas = Canvas(root, width=800, height=400)
+my_canvas.pack(fill="both", expand=True)
+resized_image = bg.subsample(int(bg.width() / 800), int(bg.height() / 400))
+my_canvas.create_image(0, 0, anchor="nw", image=resized_image)
+my_canvas.create_text(450, 200, text="First Sem Done", font=("Helvetica", 40))
+root.mainloop()
