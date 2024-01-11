@@ -1,0 +1,45 @@
+import string
+import matplotlib.pyplot as plt
+import unicodedata
+
+def process_text(filename):
+    with open(filename) as file:
+        lines = [line.strip() for line in file.readlines()]
+
+    translator = str.maketrans('', '', string.punctuation)
+    processed_lines = [line.translate(translator).lower() for line in lines]
+    return processed_lines
+
+def remove_diacritics(char):
+    normalized_char = unicodedata.normalize('NFKD', char)
+    return ''.join([c for c in normalized_char if not unicodedata.combining(c)])
+
+def plot_letter_frequency(processed_lines, title):
+    alphabet = 'abcdefghijklmnopqrstuvwxyz'
+    frequency = {letter: 0 for letter in alphabet}
+
+    total = 0
+    for line in processed_lines:
+        for letter in line:
+            letter = remove_diacritics(letter)
+
+            if letter in frequency:
+                frequency[letter] += 1
+                total += 1
+
+    sorted_frequency = sorted(frequency.items(), key=lambda x: x[1], reverse=True)
+
+    for k, v in sorted_frequency:
+        relative_frequency = (v / total) * 100
+        plt.bar(k, relative_frequency)
+
+    plt.xlabel('Letters')
+    plt.ylabel('Relative Frequency (%)')
+    plt.title(title)
+    plt.show()
+
+romeo_and_juliet_lines = process_text('Romeo and Juliet.txt')
+plot_letter_frequency(romeo_and_juliet_lines, 'Letter Frequency in Romeo and Juliet')
+
+ibong_adarna_lines = process_text('Ibong Adarna.txt')
+plot_letter_frequency(ibong_adarna_lines, 'Letter Frequency in Ibong Adarna')
